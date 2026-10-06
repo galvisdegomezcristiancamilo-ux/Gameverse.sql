@@ -1,0 +1,457 @@
+USE [master]
+GO
+/****** Object:  Database [CentroDeportivoDB]    Script Date: 6/10/2026 2:03:51 p. m. ******/
+CREATE DATABASE [CentroDeportivoDB]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'CentroDeportivoDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\CentroDeportivoDB.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'CentroDeportivoDB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\CentroDeportivoDB_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [CentroDeportivoDB] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [CentroDeportivoDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [CentroDeportivoDB] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET RECOVERY FULL 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET  MULTI_USER 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [CentroDeportivoDB] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [CentroDeportivoDB] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'CentroDeportivoDB', N'ON'
+GO
+ALTER DATABASE [CentroDeportivoDB] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [CentroDeportivoDB] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [CentroDeportivoDB]
+GO
+/****** Object:  Table [dbo].[Canchas]    Script Date: 6/10/2026 2:03:51 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Canchas](
+	[id_cancha] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](50) NOT NULL,
+	[ubicacion] [varchar](100) NOT NULL,
+	[capacidad] [int] NOT NULL,
+	[id_deporte] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_cancha] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Clientes]    Script Date: 6/10/2026 2:03:52 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Clientes](
+	[id_cliente] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](100) NOT NULL,
+	[documento] [varchar](20) NOT NULL,
+	[telefono] [varchar](20) NOT NULL,
+	[correo] [varchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_cliente] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Deportes]    Script Date: 6/10/2026 2:03:52 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Deportes](
+	[id_deporte] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](50) NOT NULL,
+	[descripcion] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_deporte] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Pagos]    Script Date: 6/10/2026 2:03:52 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Pagos](
+	[id_pago] [int] IDENTITY(1,1) NOT NULL,
+	[id_reserva] [int] NOT NULL,
+	[fecha_pago] [datetime] NOT NULL,
+	[valor_pago] [decimal](10, 2) NOT NULL,
+	[metodo_pago] [varchar](30) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_pago] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Reservas]    Script Date: 6/10/2026 2:03:52 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Reservas](
+	[id_reserva] [int] IDENTITY(1,1) NOT NULL,
+	[id_cliente] [int] NOT NULL,
+	[id_cancha] [int] NOT NULL,
+	[fecha] [date] NOT NULL,
+	[hora] [time](7) NOT NULL,
+	[valor] [decimal](10, 2) NOT NULL,
+	[estado] [varchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_reserva] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Canchas] ON 
+
+INSERT [dbo].[Canchas] ([id_cancha], [nombre], [ubicacion], [capacidad], [id_deporte]) VALUES (1, N'Cancha Fútbol 1', N'Zona Norte', 22, 1)
+INSERT [dbo].[Canchas] ([id_cancha], [nombre], [ubicacion], [capacidad], [id_deporte]) VALUES (2, N'Cancha Fútbol 2', N'Zona Sur', 22, 1)
+INSERT [dbo].[Canchas] ([id_cancha], [nombre], [ubicacion], [capacidad], [id_deporte]) VALUES (3, N'Cancha Baloncesto 1', N'Zona Central', 10, 2)
+INSERT [dbo].[Canchas] ([id_cancha], [nombre], [ubicacion], [capacidad], [id_deporte]) VALUES (4, N'Cancha Tenis 1', N'Zona Oriental', 4, 3)
+INSERT [dbo].[Canchas] ([id_cancha], [nombre], [ubicacion], [capacidad], [id_deporte]) VALUES (5, N'Cancha Voleibol 1', N'Zona Occidental', 12, 4)
+SET IDENTITY_INSERT [dbo].[Canchas] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Clientes] ON 
+
+INSERT [dbo].[Clientes] ([id_cliente], [nombre], [documento], [telefono], [correo]) VALUES (1, N'Carlos Pérez', N'1001001001', N'3001112233', N'carlos@gmail.com')
+INSERT [dbo].[Clientes] ([id_cliente], [nombre], [documento], [telefono], [correo]) VALUES (2, N'María Gómez', N'1001001002', N'3012223344', N'maria@gmail.com')
+INSERT [dbo].[Clientes] ([id_cliente], [nombre], [documento], [telefono], [correo]) VALUES (3, N'Juan Rodríguez', N'1001001003', N'3023334455', N'juan@gmail.com')
+INSERT [dbo].[Clientes] ([id_cliente], [nombre], [documento], [telefono], [correo]) VALUES (4, N'Laura Martínez', N'1001001004', N'3034445566', N'laura@gmail.com')
+INSERT [dbo].[Clientes] ([id_cliente], [nombre], [documento], [telefono], [correo]) VALUES (5, N'Andrés López', N'1001001005', N'3045556677', N'andres@gmail.com')
+SET IDENTITY_INSERT [dbo].[Clientes] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Deportes] ON 
+
+INSERT [dbo].[Deportes] ([id_deporte], [nombre], [descripcion]) VALUES (1, N'Fútbol', N'Fútbol recreativo y competitivo')
+INSERT [dbo].[Deportes] ([id_deporte], [nombre], [descripcion]) VALUES (2, N'Baloncesto', N'Baloncesto recreativo')
+INSERT [dbo].[Deportes] ([id_deporte], [nombre], [descripcion]) VALUES (3, N'Tenis', N'Tenis de campo')
+INSERT [dbo].[Deportes] ([id_deporte], [nombre], [descripcion]) VALUES (4, N'Voleibol', N'Voleibol recreativo')
+SET IDENTITY_INSERT [dbo].[Deportes] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Pagos] ON 
+
+INSERT [dbo].[Pagos] ([id_pago], [id_reserva], [fecha_pago], [valor_pago], [metodo_pago]) VALUES (1, 1, CAST(N'2026-10-06T11:45:16.387' AS DateTime), CAST(80000.00 AS Decimal(10, 2)), N'Tarjeta')
+INSERT [dbo].[Pagos] ([id_pago], [id_reserva], [fecha_pago], [valor_pago], [metodo_pago]) VALUES (2, 2, CAST(N'2026-10-06T11:45:16.387' AS DateTime), CAST(50000.00 AS Decimal(10, 2)), N'Efectivo')
+INSERT [dbo].[Pagos] ([id_pago], [id_reserva], [fecha_pago], [valor_pago], [metodo_pago]) VALUES (3, 5, CAST(N'2026-10-06T11:45:16.387' AS DateTime), CAST(60000.00 AS Decimal(10, 2)), N'Transferencia')
+INSERT [dbo].[Pagos] ([id_pago], [id_reserva], [fecha_pago], [valor_pago], [metodo_pago]) VALUES (4, 3, CAST(N'2026-10-06T11:45:16.453' AS DateTime), CAST(40000.00 AS Decimal(10, 2)), N'Transferencia')
+INSERT [dbo].[Pagos] ([id_pago], [id_reserva], [fecha_pago], [valor_pago], [metodo_pago]) VALUES (5, 3, CAST(N'2026-10-06T11:58:58.370' AS DateTime), CAST(40000.00 AS Decimal(10, 2)), N'Transferencia')
+INSERT [dbo].[Pagos] ([id_pago], [id_reserva], [fecha_pago], [valor_pago], [metodo_pago]) VALUES (6, 3, CAST(N'2026-10-06T11:59:00.583' AS DateTime), CAST(40000.00 AS Decimal(10, 2)), N'Transferencia')
+INSERT [dbo].[Pagos] ([id_pago], [id_reserva], [fecha_pago], [valor_pago], [metodo_pago]) VALUES (7, 3, CAST(N'2026-10-06T11:59:03.640' AS DateTime), CAST(40000.00 AS Decimal(10, 2)), N'Transferencia')
+SET IDENTITY_INSERT [dbo].[Pagos] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Reservas] ON 
+
+INSERT [dbo].[Reservas] ([id_reserva], [id_cliente], [id_cancha], [fecha], [hora], [valor], [estado]) VALUES (1, 1, 1, CAST(N'2026-10-10' AS Date), CAST(N'08:00:00' AS Time), CAST(80000.00 AS Decimal(10, 2)), N'Pagada')
+INSERT [dbo].[Reservas] ([id_reserva], [id_cliente], [id_cancha], [fecha], [hora], [valor], [estado]) VALUES (2, 2, 3, CAST(N'2026-10-11' AS Date), CAST(N'10:00:00' AS Time), CAST(50000.00 AS Decimal(10, 2)), N'Pagada')
+INSERT [dbo].[Reservas] ([id_reserva], [id_cliente], [id_cancha], [fecha], [hora], [valor], [estado]) VALUES (3, 3, 4, CAST(N'2026-10-12' AS Date), CAST(N'14:00:00' AS Time), CAST(40000.00 AS Decimal(10, 2)), N'Pagada')
+INSERT [dbo].[Reservas] ([id_reserva], [id_cliente], [id_cancha], [fecha], [hora], [valor], [estado]) VALUES (4, 4, 2, CAST(N'2026-10-13' AS Date), CAST(N'16:00:00' AS Time), CAST(80000.00 AS Decimal(10, 2)), N'Pendiente')
+INSERT [dbo].[Reservas] ([id_reserva], [id_cliente], [id_cancha], [fecha], [hora], [valor], [estado]) VALUES (5, 5, 5, CAST(N'2026-10-14' AS Date), CAST(N'18:00:00' AS Time), CAST(60000.00 AS Decimal(10, 2)), N'Pagada')
+SET IDENTITY_INSERT [dbo].[Reservas] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Clientes__A25B3E61D5456BC5]    Script Date: 6/10/2026 2:03:52 p. m. ******/
+ALTER TABLE [dbo].[Clientes] ADD UNIQUE NONCLUSTERED 
+(
+	[documento] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Pagos] ADD  DEFAULT (getdate()) FOR [fecha_pago]
+GO
+ALTER TABLE [dbo].[Reservas] ADD  DEFAULT ('Pendiente') FOR [estado]
+GO
+ALTER TABLE [dbo].[Canchas]  WITH CHECK ADD  CONSTRAINT [FK_Canchas_Deportes] FOREIGN KEY([id_deporte])
+REFERENCES [dbo].[Deportes] ([id_deporte])
+GO
+ALTER TABLE [dbo].[Canchas] CHECK CONSTRAINT [FK_Canchas_Deportes]
+GO
+ALTER TABLE [dbo].[Pagos]  WITH CHECK ADD  CONSTRAINT [FK_Pagos_Reservas] FOREIGN KEY([id_reserva])
+REFERENCES [dbo].[Reservas] ([id_reserva])
+GO
+ALTER TABLE [dbo].[Pagos] CHECK CONSTRAINT [FK_Pagos_Reservas]
+GO
+ALTER TABLE [dbo].[Reservas]  WITH CHECK ADD  CONSTRAINT [FK_Reservas_Canchas] FOREIGN KEY([id_cancha])
+REFERENCES [dbo].[Canchas] ([id_cancha])
+GO
+ALTER TABLE [dbo].[Reservas] CHECK CONSTRAINT [FK_Reservas_Canchas]
+GO
+ALTER TABLE [dbo].[Reservas]  WITH CHECK ADD  CONSTRAINT [FK_Reservas_Clientes] FOREIGN KEY([id_cliente])
+REFERENCES [dbo].[Clientes] ([id_cliente])
+GO
+ALTER TABLE [dbo].[Reservas] CHECK CONSTRAINT [FK_Reservas_Clientes]
+GO
+ALTER TABLE [dbo].[Canchas]  WITH CHECK ADD  CONSTRAINT [CK_Canchas_Capacidad] CHECK  (([capacidad]>(0)))
+GO
+ALTER TABLE [dbo].[Canchas] CHECK CONSTRAINT [CK_Canchas_Capacidad]
+GO
+ALTER TABLE [dbo].[Pagos]  WITH CHECK ADD  CONSTRAINT [CK_Pagos_Valor] CHECK  (([valor_pago]>(0)))
+GO
+ALTER TABLE [dbo].[Pagos] CHECK CONSTRAINT [CK_Pagos_Valor]
+GO
+ALTER TABLE [dbo].[Reservas]  WITH CHECK ADD  CONSTRAINT [CK_Reservas_Estado] CHECK  (([estado]='Cancelada' OR [estado]='Pagada' OR [estado]='Pendiente'))
+GO
+ALTER TABLE [dbo].[Reservas] CHECK CONSTRAINT [CK_Reservas_Estado]
+GO
+ALTER TABLE [dbo].[Reservas]  WITH CHECK ADD  CONSTRAINT [CK_Reservas_Valor] CHECK  (([valor]>(0)))
+GO
+ALTER TABLE [dbo].[Reservas] CHECK CONSTRAINT [CK_Reservas_Valor]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_BuscarReserva]    Script Date: 6/10/2026 2:03:52 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+/* ============================================================
+   PROCEDIMIENTO 1
+   CRITERIO: PROCEDIMIENTO CON PARÁMETRO DE ENTRADA (IN)
+
+   Nombre solicitado por el examen:
+   sp_BuscarReserva
+
+   Recibe:
+   @id_reserva
+
+   Devuelve:
+   Cliente
+   Deporte
+   Cancha
+   Fecha
+   Hora
+   Valor
+   ============================================================ */
+
+CREATE PROCEDURE [dbo].[sp_BuscarReserva]
+    @id_reserva INT
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+
+    SELECT
+        r.id_reserva,
+        c.nombre AS Cliente,
+        d.nombre AS Deporte,
+        ca.nombre AS Cancha,
+        r.fecha AS Fecha,
+        r.hora AS Hora,
+        r.valor AS Valor,
+        r.estado AS Estado
+    FROM Reservas r
+
+    INNER JOIN Clientes c
+        ON r.id_cliente = c.id_cliente
+
+    INNER JOIN Canchas ca
+        ON r.id_cancha = ca.id_cancha
+
+    INNER JOIN Deportes d
+        ON ca.id_deporte = d.id_deporte
+
+    WHERE r.id_reserva = @id_reserva;
+
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ObtenerTotalPagado]    Script Date: 6/10/2026 2:03:52 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+/* ============================================================
+   PROCEDIMIENTO 2
+   CRITERIO: PROCEDIMIENTO CON OUTPUT
+
+   Recibe un id de reserva y devuelve mediante OUTPUT
+   el total pagado de dicha reserva.
+   ============================================================ */
+
+CREATE PROCEDURE [dbo].[sp_ObtenerTotalPagado]
+    @id_reserva INT,
+    @total_pagado DECIMAL(10,2) OUTPUT
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+
+    SELECT
+        @total_pagado = ISNULL(SUM(valor_pago), 0)
+    FROM Pagos
+    WHERE id_reserva = @id_reserva;
+
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_RegistrarPago]    Script Date: 6/10/2026 2:03:52 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+/* ============================================================
+   PROCEDIMIENTO 3
+   CRITERIO: PROCEDIMIENTO IN + OUTPUT
+
+   Recibe:
+   @id_reserva
+   @valor_pago
+   @metodo_pago
+
+   Devuelve mediante OUTPUT:
+   @id_pago
+
+   Además registra el pago.
+   ============================================================ */
+
+CREATE PROCEDURE [dbo].[sp_RegistrarPago]
+    @id_reserva INT,
+    @valor_pago DECIMAL(10,2),
+    @metodo_pago VARCHAR(30),
+    @id_pago INT OUTPUT
+AS
+BEGIN
+
+    SET NOCOUNT ON;
+
+    /* Validar que exista la reserva */
+
+    IF NOT EXISTS
+    (
+        SELECT 1
+        FROM Reservas
+        WHERE id_reserva = @id_reserva
+    )
+    BEGIN
+        RAISERROR('La reserva no existe.', 16, 1);
+        RETURN;
+    END;
+
+
+    /* Validar valor */
+
+    IF @valor_pago <= 0
+    BEGIN
+        RAISERROR('El valor del pago debe ser mayor que cero.', 16, 1);
+        RETURN;
+    END;
+
+
+    /* Registrar pago */
+
+    INSERT INTO Pagos
+    (
+        id_reserva,
+        valor_pago,
+        metodo_pago
+    )
+    VALUES
+    (
+        @id_reserva,
+        @valor_pago,
+        @metodo_pago
+    );
+
+
+    /* Obtener ID generado */
+
+    SET @id_pago = SCOPE_IDENTITY();
+
+
+    /* Actualizar estado de la reserva
+       cuando el total pagado cubra el valor */
+
+    IF
+    (
+        SELECT ISNULL(SUM(valor_pago),0)
+        FROM Pagos
+        WHERE id_reserva = @id_reserva
+    )
+    >=
+    (
+        SELECT valor
+        FROM Reservas
+        WHERE id_reserva = @id_reserva
+    )
+    BEGIN
+
+        UPDATE Reservas
+        SET estado = 'Pagada'
+        WHERE id_reserva = @id_reserva;
+
+    END;
+
+END;
+GO
+USE [master]
+GO
+ALTER DATABASE [CentroDeportivoDB] SET  READ_WRITE 
+GO
