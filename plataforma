@@ -1,0 +1,448 @@
+USE [master]
+GO
+/****** Object:  Database [PlataformaEventos]    Script Date: 6/10/2026 2:04:57 p. m. ******/
+CREATE DATABASE [PlataformaEventos]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'PlataformaEventos', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\PlataformaEventos.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'PlataformaEventos_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\PlataformaEventos_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [PlataformaEventos] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [PlataformaEventos].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [PlataformaEventos] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [PlataformaEventos] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [PlataformaEventos] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [PlataformaEventos] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [PlataformaEventos] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET RECOVERY FULL 
+GO
+ALTER DATABASE [PlataformaEventos] SET  MULTI_USER 
+GO
+ALTER DATABASE [PlataformaEventos] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [PlataformaEventos] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [PlataformaEventos] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [PlataformaEventos] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [PlataformaEventos] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [PlataformaEventos] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'PlataformaEventos', N'ON'
+GO
+ALTER DATABASE [PlataformaEventos] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [PlataformaEventos] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [PlataformaEventos]
+GO
+/****** Object:  Table [dbo].[Categorias]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Categorias](
+	[id_categoria] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](100) NOT NULL,
+	[descripcion] [varchar](250) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_categoria] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Eventos]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Eventos](
+	[id_evento] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](150) NOT NULL,
+	[descripcion] [varchar](500) NULL,
+	[fecha] [date] NOT NULL,
+	[hora] [time](7) NOT NULL,
+	[precio] [decimal](18, 2) NOT NULL,
+	[id_categoria] [int] NOT NULL,
+	[id_lugar] [int] NOT NULL,
+	[id_organizador] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_evento] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Inscripciones]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Inscripciones](
+	[id_inscripcion] [int] IDENTITY(1,1) NOT NULL,
+	[fecha_inscripcion] [date] NOT NULL,
+	[estado] [varchar](50) NOT NULL,
+	[id_participante] [int] NOT NULL,
+	[id_evento] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_inscripcion] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Lugares]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Lugares](
+	[id_lugar] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](150) NOT NULL,
+	[ciudad] [varchar](100) NOT NULL,
+	[capacidad] [int] NOT NULL,
+	[direccion] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_lugar] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Organizadores]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Organizadores](
+	[id_organizador] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](100) NOT NULL,
+	[apellido] [varchar](100) NOT NULL,
+	[telefono] [varchar](20) NULL,
+	[correo] [varchar](150) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_organizador] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Pagos]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Pagos](
+	[id_pago] [int] IDENTITY(1,1) NOT NULL,
+	[fecha_pago] [date] NOT NULL,
+	[valor] [decimal](18, 2) NOT NULL,
+	[metodo_pago] [varchar](50) NOT NULL,
+	[estado] [varchar](50) NOT NULL,
+	[id_inscripcion] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_pago] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Participantes]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Participantes](
+	[id_participante] [int] IDENTITY(1,1) NOT NULL,
+	[nombre] [varchar](100) NOT NULL,
+	[apellido] [varchar](100) NOT NULL,
+	[documento] [varchar](20) NOT NULL,
+	[telefono] [varchar](20) NULL,
+	[correo] [varchar](150) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id_participante] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Categorias] ON 
+
+INSERT [dbo].[Categorias] ([id_categoria], [nombre], [descripcion]) VALUES (1, N'Concierto', N'Eventos musicales')
+INSERT [dbo].[Categorias] ([id_categoria], [nombre], [descripcion]) VALUES (2, N'Taller', N'Actividades prácticas')
+INSERT [dbo].[Categorias] ([id_categoria], [nombre], [descripcion]) VALUES (3, N'Conferencia', N'Eventos académicos')
+INSERT [dbo].[Categorias] ([id_categoria], [nombre], [descripcion]) VALUES (4, N'Festival', N'Eventos culturales')
+INSERT [dbo].[Categorias] ([id_categoria], [nombre], [descripcion]) VALUES (5, N'Experiencia', N'Experiencias recreativas')
+SET IDENTITY_INSERT [dbo].[Categorias] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Eventos] ON 
+
+INSERT [dbo].[Eventos] ([id_evento], [nombre], [descripcion], [fecha], [hora], [precio], [id_categoria], [id_lugar], [id_organizador]) VALUES (1, N'Noche de Rock', N'Concierto de bandas locales', CAST(N'2026-10-15' AS Date), CAST(N'20:00:00' AS Time), CAST(85000.00 AS Decimal(18, 2)), 1, 1, 1)
+INSERT [dbo].[Eventos] ([id_evento], [nombre], [descripcion], [fecha], [hora], [precio], [id_categoria], [id_lugar], [id_organizador]) VALUES (2, N'Taller de Fotografía', N'Taller básico de fotografía', CAST(N'2026-10-20' AS Date), CAST(N'14:00:00' AS Time), CAST(45000.00 AS Decimal(18, 2)), 2, 2, 2)
+INSERT [dbo].[Eventos] ([id_evento], [nombre], [descripcion], [fecha], [hora], [precio], [id_categoria], [id_lugar], [id_organizador]) VALUES (3, N'Tecnología del Futuro', N'Conferencia sobre tecnología', CAST(N'2026-11-05' AS Date), CAST(N'09:00:00' AS Time), CAST(120000.00 AS Decimal(18, 2)), 3, 3, 3)
+INSERT [dbo].[Eventos] ([id_evento], [nombre], [descripcion], [fecha], [hora], [precio], [id_categoria], [id_lugar], [id_organizador]) VALUES (4, N'Festival Gastronómico', N'Festival de comida típica', CAST(N'2026-11-20' AS Date), CAST(N'11:00:00' AS Time), CAST(30000.00 AS Decimal(18, 2)), 4, 4, 1)
+SET IDENTITY_INSERT [dbo].[Eventos] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Inscripciones] ON 
+
+INSERT [dbo].[Inscripciones] ([id_inscripcion], [fecha_inscripcion], [estado], [id_participante], [id_evento]) VALUES (1, CAST(N'2026-10-06' AS Date), N'Confirmada', 1, 1)
+INSERT [dbo].[Inscripciones] ([id_inscripcion], [fecha_inscripcion], [estado], [id_participante], [id_evento]) VALUES (2, CAST(N'2026-10-06' AS Date), N'Confirmada', 2, 1)
+INSERT [dbo].[Inscripciones] ([id_inscripcion], [fecha_inscripcion], [estado], [id_participante], [id_evento]) VALUES (3, CAST(N'2026-10-06' AS Date), N'Confirmada', 3, 2)
+SET IDENTITY_INSERT [dbo].[Inscripciones] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Lugares] ON 
+
+INSERT [dbo].[Lugares] ([id_lugar], [nombre], [ciudad], [capacidad], [direccion]) VALUES (1, N'Teatro Central', N'Medellín', 500, N'Carrera 45 #50-20')
+INSERT [dbo].[Lugares] ([id_lugar], [nombre], [ciudad], [capacidad], [direccion]) VALUES (2, N'Centro Cultural Norte', N'Medellín', 300, N'Calle 80 #30-15')
+INSERT [dbo].[Lugares] ([id_lugar], [nombre], [ciudad], [capacidad], [direccion]) VALUES (3, N'Auditorio Principal', N'Bogotá', 800, N'Carrera 15 #72-30')
+INSERT [dbo].[Lugares] ([id_lugar], [nombre], [ciudad], [capacidad], [direccion]) VALUES (4, N'Plaza Cultural', N'Cali', 1000, N'Calle 5 #10-25')
+SET IDENTITY_INSERT [dbo].[Lugares] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Organizadores] ON 
+
+INSERT [dbo].[Organizadores] ([id_organizador], [nombre], [apellido], [telefono], [correo]) VALUES (1, N'Carlos', N'Ramírez', N'3001112233', N'carlos@email.com')
+INSERT [dbo].[Organizadores] ([id_organizador], [nombre], [apellido], [telefono], [correo]) VALUES (2, N'Laura', N'Gómez', N'3012223344', N'laura@email.com')
+INSERT [dbo].[Organizadores] ([id_organizador], [nombre], [apellido], [telefono], [correo]) VALUES (3, N'Andrés', N'Martínez', N'3023334455', N'andres@email.com')
+SET IDENTITY_INSERT [dbo].[Organizadores] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Participantes] ON 
+
+INSERT [dbo].[Participantes] ([id_participante], [nombre], [apellido], [documento], [telefono], [correo]) VALUES (1, N'Daniel', N'López', N'1001', N'3101112233', N'daniel@email.com')
+INSERT [dbo].[Participantes] ([id_participante], [nombre], [apellido], [documento], [telefono], [correo]) VALUES (2, N'María', N'Torres', N'1002', N'3112223344', N'maria@email.com')
+INSERT [dbo].[Participantes] ([id_participante], [nombre], [apellido], [documento], [telefono], [correo]) VALUES (3, N'Juan', N'Pérez', N'1003', N'3123334455', N'juan@email.com')
+INSERT [dbo].[Participantes] ([id_participante], [nombre], [apellido], [documento], [telefono], [correo]) VALUES (4, N'Sofía', N'García', N'1004', N'3134445566', N'sofia@email.com')
+SET IDENTITY_INSERT [dbo].[Participantes] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__Particip__A25B3E617BB4DBEB]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+ALTER TABLE [dbo].[Participantes] ADD UNIQUE NONCLUSTERED 
+(
+	[documento] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Inscripciones] ADD  DEFAULT (getdate()) FOR [fecha_inscripcion]
+GO
+ALTER TABLE [dbo].[Pagos] ADD  DEFAULT (getdate()) FOR [fecha_pago]
+GO
+ALTER TABLE [dbo].[Eventos]  WITH CHECK ADD  CONSTRAINT [FK_Evento_Categoria] FOREIGN KEY([id_categoria])
+REFERENCES [dbo].[Categorias] ([id_categoria])
+GO
+ALTER TABLE [dbo].[Eventos] CHECK CONSTRAINT [FK_Evento_Categoria]
+GO
+ALTER TABLE [dbo].[Eventos]  WITH CHECK ADD  CONSTRAINT [FK_Evento_Lugar] FOREIGN KEY([id_lugar])
+REFERENCES [dbo].[Lugares] ([id_lugar])
+GO
+ALTER TABLE [dbo].[Eventos] CHECK CONSTRAINT [FK_Evento_Lugar]
+GO
+ALTER TABLE [dbo].[Eventos]  WITH CHECK ADD  CONSTRAINT [FK_Evento_Organizador] FOREIGN KEY([id_organizador])
+REFERENCES [dbo].[Organizadores] ([id_organizador])
+GO
+ALTER TABLE [dbo].[Eventos] CHECK CONSTRAINT [FK_Evento_Organizador]
+GO
+ALTER TABLE [dbo].[Inscripciones]  WITH CHECK ADD  CONSTRAINT [FK_Inscripcion_Evento] FOREIGN KEY([id_evento])
+REFERENCES [dbo].[Eventos] ([id_evento])
+GO
+ALTER TABLE [dbo].[Inscripciones] CHECK CONSTRAINT [FK_Inscripcion_Evento]
+GO
+ALTER TABLE [dbo].[Inscripciones]  WITH CHECK ADD  CONSTRAINT [FK_Inscripcion_Participante] FOREIGN KEY([id_participante])
+REFERENCES [dbo].[Participantes] ([id_participante])
+GO
+ALTER TABLE [dbo].[Inscripciones] CHECK CONSTRAINT [FK_Inscripcion_Participante]
+GO
+ALTER TABLE [dbo].[Pagos]  WITH CHECK ADD  CONSTRAINT [FK_Pago_Inscripcion] FOREIGN KEY([id_inscripcion])
+REFERENCES [dbo].[Inscripciones] ([id_inscripcion])
+GO
+ALTER TABLE [dbo].[Pagos] CHECK CONSTRAINT [FK_Pago_Inscripcion]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_BuscarEvento]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- ============================================================================
+-- SOLUCIÓN: RETO FINAL PARA LOS ESTUDIANTES
+-- ============================================================================
+
+-- Reto 1 — Entrada: sp_BuscarEvento
+-- Recibe @id_evento y muestra: nombre, fecha, hora, precio, lugar y categoría.
+CREATE PROCEDURE [dbo].[sp_BuscarEvento]
+    @id_evento INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        e.nombre AS [nombre],
+        e.fecha AS [fecha],
+        e.hora AS [hora],
+        e.precio AS [precio],
+        l.nombre AS [lugar],
+        c.nombre AS [categoría]
+    FROM Eventos e
+    INNER JOIN Lugares l ON e.id_lugar = l.id_lugar
+    INNER JOIN Categorias c ON e.id_categoria = c.id_categoria
+    WHERE e.id_evento = @id_evento;
+END;
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_BuscarEventosCategoria]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- ============================================================================
+-- PROCEDIMIENTOS EXPLICATIVOS DEL DOCUMENTO
+-- ============================================================================
+
+-- Procedimiento Ejemplo 1: Parámetro de Entrada (Buscar eventos por categoría)
+CREATE PROCEDURE [dbo].[sp_BuscarEventosCategoria]
+    @id_categoria INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT 
+        id_evento,
+        nombre,
+        fecha,
+        precio
+    FROM Eventos
+    WHERE id_categoria = @id_categoria;
+END;
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CalcularRecaudoEvento]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Reto 3 — Entrada + Salida: sp_CalcularRecaudoEvento
+-- Recibe @id_evento y devuelve mediante OUTPUT el recaudo usando la fórmula especificada:
+-- recaudo = participantes * precio del evento
+CREATE PROCEDURE [dbo].[sp_CalcularRecaudoEvento]
+    @id_evento INT,
+    @recaudo DECIMAL(18,2) OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    
+    DECLARE @CantidadParticipantes INT;
+    DECLARE @PrecioEvento DECIMAL(18,2);
+    
+    -- Obtener cantidad de inscritos al evento
+    SELECT @CantidadParticipantes = COUNT(*) 
+    FROM Inscripciones 
+    WHERE id_evento = @id_evento;
+    
+    -- Obtener el precio unitario del evento
+    SELECT @PrecioEvento = precio 
+    FROM Eventos 
+    WHERE id_evento = @id_evento;
+    
+    -- Aplicación estricta de la fórmula estipulada
+    SET @recaudo = ISNULL(@CantidadParticipantes, 0) * ISNULL(@PrecioEvento, 0);
+END;
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_CantidadEventos]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Procedimiento Ejemplo 2: Parámetro de Salida (Saber cuántos eventos existen)
+CREATE PROCEDURE [dbo].[sp_CantidadEventos]
+    @cantidad INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT @cantidad = COUNT(*) FROM Eventos;
+END;
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_ContarInscritos]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Procedimiento Ejemplo 3: Entrada + Salida (Cuántas personas inscritas en un evento)
+CREATE PROCEDURE [dbo].[sp_ContarInscritos]
+    @id_evento INT,
+    @cantidad INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT @cantidad = COUNT(*) 
+    FROM Inscripciones
+    WHERE id_evento = @id_evento;
+END;
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_TotalParticipantes]    Script Date: 6/10/2026 2:04:58 p. m. ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- Reto 2 — Salida: sp_TotalParticipantes
+-- Devuelve mediante OUTPUT la cantidad total de participantes de la plataforma.
+CREATE PROCEDURE [dbo].[sp_TotalParticipantes]
+    @total INT OUTPUT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT @total = COUNT(*) 
+    FROM Participantes;
+END;
+
+GO
+USE [master]
+GO
+ALTER DATABASE [PlataformaEventos] SET  READ_WRITE 
+GO
